@@ -20,6 +20,14 @@ func NewWeatherHandler() *WeatherHandler {
 	}
 }
 
+func (h *WeatherHandler) RegisterRoutes(app *fiber.App)  {
+	appGroup := app.Group("/api/v1")
+	// appGroup.Post("/location", locationHandler.GetLocation)
+	appGroup.Post("/weather", h.GetWeather)
+	appGroupV2 := app.Group("/api/v2")
+	appGroupV2.Post("/location", h.LocationHandler.GetLocation)
+}
+
 func (h *WeatherHandler) GetWeather(ctx *fiber.Ctx) error {
 
 	var req dtos.LocationRequest
@@ -55,14 +63,7 @@ func (h *WeatherHandler) GetWeather(ctx *fiber.Ctx) error {
 	}
 
 	// Add your logic here, e.g., save the location, process data, etc.
-	responseData, err := services.GetLocation(req)
-	if err != nil {
-		// Return a 500 Internal Server Error response
-		return ctx.Status(fiber.StatusInternalServerError).JSON(dtos.ApiStandardResponseModel{
-			Success: false,
-			Error:   err.Error(),
-		})
-	}
+	responseData, _ := h.LocationHandler.fetchLocation(ctx,req)
 
 
 	weatherService, err := services.GetWeather(*responseData)

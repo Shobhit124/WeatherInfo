@@ -53,8 +53,8 @@ func (h *LocationHandler) GetLocation(ctx *fiber.Ctx) error {
 	}
 
 	// Add your logic here, e.g., save the location, process data, etc.
-	responseData, err := services.GetLocation(req)
-	
+	responseData, err := h.fetchLocation(ctx, req)
+
 	if err != nil {
 		// Return a 500 Internal Server Error response
 		return ctx.Status(fiber.StatusInternalServerError).JSON(dtos.ApiStandardResponseModel{
@@ -68,4 +68,20 @@ func (h *LocationHandler) GetLocation(ctx *fiber.Ctx) error {
 		Success: true,
 		Data:    responseData,
 	})
+}
+
+func (h *LocationHandler) fetchLocation(ctx *fiber.Ctx, req dtos.LocationRequest) (*dtos.LocationResponse, error) {
+	// Add your logic here, e.g., save the location, process data, etc.
+	responseData, err := services.GetLocation(req)
+
+	if err != nil {
+		// Return a 500 Internal Server Error response
+		return nil, ctx.Status(fiber.StatusInternalServerError).JSON(dtos.ApiStandardResponseModel{
+			Success: false,
+			Error:   err.Error(),
+		})
+	}
+
+	return responseData, nil
+
 }
