@@ -34,7 +34,7 @@ func GetLocation(request dtos.LocationRequest) (*dtos.LocationResponse, error) {
 
 	// If no data is found, return an error
 	if len(locData) == 0 {
-		return nil, fmt.Errorf("no location foud")
+		return nil, fmt.Errorf("no location found")
 	}
 	fmt.Println(locData[0])
 	// Return the success response with the parsed data (only the first result, as it's a list)
