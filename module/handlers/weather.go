@@ -55,7 +55,7 @@ func (h *WeatherHandler) GetWeather(ctx *fiber.Ctx) error {
 	}
 
 	// Add your logic here, e.g., save the location, process data, etc.
-	responseData, err := h.LocationHandler.fetchLocationData(req)
+	responseData, err := services.GetLocation(req)
 	if err != nil {
 		// Return a 500 Internal Server Error response
 		return ctx.Status(fiber.StatusInternalServerError).JSON(dtos.ApiStandardResponseModel{
